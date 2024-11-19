@@ -4,7 +4,7 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface ApiService {
-    @GET("services/feeds/photos_public.gne?format=json&nojsoncallback=1&tags=porcupine")
+    @GET("services/feeds/photos_public.gne?")
     suspend fun fetchData(
         @Query("format") format: String = "json",
         @Query("nojsoncallback") nojsoncallback: Int = 1,
