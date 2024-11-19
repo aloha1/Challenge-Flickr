@@ -20,13 +20,12 @@ class MainViewModel : ViewModel() {
 
     private val apiService = retrofit.create(ApiService::class.java)
 
-    fun fetchData() {
+    fun fetchData(searchQuery: String = "porcupine") {
         viewModelScope.launch {
             _uiState.value = UiState.Loading
             try {
-                val response = apiService.fetchData()
+                val response = apiService.fetchData(tags = searchQuery)
                 _uiState.value = UiState.Success(response)
-                //Log.d("TAG", "response: $response")
             } catch (e: Exception) {
                 _uiState.value = UiState.Error(e.message ?: "Unknown error")
             }

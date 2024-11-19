@@ -37,16 +37,7 @@ data class ItemNetwork(
     val authorId: String,
     @SerializedName("tags")
     val tags: String
-){
-//    fun toMenuItemRoom() = MenuItemRoom(
-//        id,
-//        title,
-//        description,
-//        price,
-//        image,
-//        category
-//    )
-}
+)
 
 data class Media(
     @SerializedName("m")

@@ -1,18 +1,18 @@
 package yunwen.exhibition.challengeflickr
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.viewModelFactory
+import yunwen.exhibition.challengeflickr.DetailActivity.Companion.KEY_DESCRIPTION
+import yunwen.exhibition.challengeflickr.DetailActivity.Companion.KEY_IMAGE
+import yunwen.exhibition.challengeflickr.DetailActivity.Companion.KEY_AUTHOR
+import yunwen.exhibition.challengeflickr.DetailActivity.Companion.KEY_PUBLISHED
+import yunwen.exhibition.challengeflickr.DetailActivity.Companion.KEY_TITLE
 import yunwen.exhibition.challengeflickr.ui.theme.ChallengeFlickrTheme
 
 class MainActivity : ComponentActivity() {
@@ -21,34 +21,24 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        enableEdgeToEdge()
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
+        val navigate = this::startProductActivity
         setContent {
             ChallengeFlickrTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-//                    Greeting(
-//                        name = "Android",
-//                        modifier = Modifier.padding(innerPadding)
-//                    )
-                    HomeScreen(viewModel) { }
+                    HomeScreen(viewModel, onImageClick = navigate)
                 }
             }
         }
     }
-}
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    ChallengeFlickrTheme {
-        Greeting("Android")
+    private fun startProductActivity(itemsNetwork: ItemNetwork) {
+        val intent = Intent(this@MainActivity, DetailActivity::class.java)
+        intent.putExtra(KEY_TITLE, itemsNetwork.title)
+        intent.putExtra(KEY_IMAGE, itemsNetwork.media.m)
+        intent.putExtra(KEY_AUTHOR, itemsNetwork.author)
+        intent.putExtra(KEY_DESCRIPTION, itemsNetwork.description)
+        intent.putExtra(KEY_PUBLISHED, itemsNetwork.published)
+        startActivity(intent)
     }
 }
