@@ -155,7 +155,7 @@ private fun MenuItemsList(item: DataNetwork, onImageClick: (ItemNetwork)->Unit) 
                             modifier = Modifier.fillMaxHeight()
                                 .clip(shape = RoundedCornerShape(12.dp))
                                 .clickable(onClick = { onImageClick(item) }),
-                            contentDescription = "Dish Image",
+                            contentDescription = "Image",
                         )
                     }
                 }
