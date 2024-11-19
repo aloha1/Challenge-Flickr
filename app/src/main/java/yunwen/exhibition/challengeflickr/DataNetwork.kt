@@ -14,8 +14,8 @@ data class DataNetwork(
     val modified: String,
     @SerializedName("generator")
     val generator: String,
-    @SerializedName("item")
-    val item: List<ItemNetwork>
+    @SerializedName("items")
+    val items: List<ItemNetwork>
 )
 
 data class ItemNetwork(

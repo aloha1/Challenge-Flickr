@@ -1,5 +1,6 @@
 package yunwen.exhibition.challengeflickr
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,6 +26,7 @@ class MainViewModel : ViewModel() {
             try {
                 val response = apiService.fetchData()
                 _uiState.value = UiState.Success(response)
+                //Log.d("TAG", "response: $response")
             } catch (e: Exception) {
                 _uiState.value = UiState.Error(e.message ?: "Unknown error")
             }
@@ -34,6 +36,6 @@ class MainViewModel : ViewModel() {
 
 sealed class UiState {
     object Loading : UiState()
-    data class Success(val data: YourDataClass) : UiState()
+    data class Success(val data: DataNetwork) : UiState()
     data class Error(val message: String) : UiState()
 }

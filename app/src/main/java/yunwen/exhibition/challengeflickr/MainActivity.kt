@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.viewModelFactory
 import yunwen.exhibition.challengeflickr.ui.theme.ChallengeFlickrTheme
 
 class MainActivity : ComponentActivity() {
@@ -25,10 +26,11 @@ class MainActivity : ComponentActivity() {
         setContent {
             ChallengeFlickrTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+//                    Greeting(
+//                        name = "Android",
+//                        modifier = Modifier.padding(innerPadding)
+//                    )
+                    HomeScreen(viewModel) { }
                 }
             }
         }

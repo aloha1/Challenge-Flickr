@@ -1,5 +1,6 @@
 package yunwen.exhibition.challengeflickr
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -23,6 +24,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,21 +40,39 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import yunwen.exhibition.challengeflickr.ui.theme.LittleLemonColor
 
 @Composable
 fun HomeScreen(
-//    viewModel: MainViewModel,
+    viewModel: MainViewModel,
     onClick: ()->Unit = {},
     onImageClick: (MenuItemRoom)->Unit
 ) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    LaunchedEffect(Unit) {
+        viewModel.fetchData()
+    }
+    when (uiState) {
+        is UiState.Success -> {
+            Log.d("MyTag", "data: " + (uiState as UiState.Success).data)// Access the name property
+        }
+        // ...
+        is UiState.Error -> {
+            Log.d("MyTag", "error:" + (uiState as UiState.Error).message)
+        }
+        is UiState.Loading -> {
+            Log.d("MyTag", "Loading")
+
+        }
+    }
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.Start
     ) {
         var orderedItems by remember { mutableStateOf("") }
         var searchPhrase by remember { mutableStateOf("") }
-//        val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
 
         Column {
             UpperPanel(searchPhrase) { searchPhrase = it }
@@ -176,7 +197,9 @@ private fun MenuItemsList(items: List<MenuItemRoom>, onImageClick: (MenuItemRoom
                     color = LittleLemonColor.yellow
                 )
                 Card {
-                    Row(modifier = Modifier.fillMaxWidth().padding(8.dp)) {
+                    Row(modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp)) {
                         Column {
                             Text(
                                 text = menuItem.title,
