@@ -27,8 +27,6 @@ class ExampleUnitTest {
         composeTestRule.setContent {
             ProductDetails("title", "author", "image","desc", "publish")
         }
-
-        // Interact with the composable using test APIs, e.g.,
         composeTestRule.onNodeWithText("title").assertIsDisplayed()
         composeTestRule.onNodeWithText("author").assertIsDisplayed()
         composeTestRule.onNodeWithText("image").assertIsDisplayed()
