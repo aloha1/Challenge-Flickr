@@ -73,7 +73,7 @@ fun HomeScreen(
                 .padding(start = 12.dp, end = 12.dp, top = 16.dp, bottom = 16.dp)
         )  {
             Text(
-                text = "Android Expo",
+                text = "Challenge",
                 fontSize = 40.sp,
                 fontWeight = FontWeight.Bold,
                 color = LittleLemonColor.yellow
