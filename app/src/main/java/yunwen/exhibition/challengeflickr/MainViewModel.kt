@@ -8,12 +8,14 @@ import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+const val baseUrl = "https://api.flickr.com"
+
 class MainViewModel : ViewModel() {
     private val _uiState = MutableStateFlow<UiState>(UiState.Loading)
     val uiState: StateFlow<UiState> = _uiState
 
     private val retrofit = Retrofit.Builder()
-        .baseUrl("https://api.flickr.com")
+        .baseUrl(baseUrl)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
@@ -21,7 +23,6 @@ class MainViewModel : ViewModel() {
 
     fun fetchData(searchQuery: String = "porcupine") {
         viewModelScope.launch {
-            _uiState.value = UiState.Loading
             try {
                 val response = apiService.fetchData(tags = searchQuery)
                 _uiState.value = UiState.Success(response)
