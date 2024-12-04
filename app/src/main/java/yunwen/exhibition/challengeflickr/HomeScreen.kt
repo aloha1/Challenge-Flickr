@@ -70,76 +70,69 @@ fun HomeScreen(
                     "data: " + (uiState as UiState.Success).data
                 )// Access the name property
                 item = (uiState as UiState.Success).data
-
             }
         }
+        var searchPhrase by remember { mutableStateOf("") }
+        var lastUpdateTime by remember { mutableLongStateOf(0L) }
         Column(
-            modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.Start
+            modifier = Modifier
+                .background(color = LittleLemonColor.green)
+                .padding(start = 12.dp, end = 12.dp, top = 16.dp, bottom = 16.dp),
+            horizontalAlignment = Alignment.Start
         ) {
-            var searchPhrase by remember { mutableStateOf("") }
-            var lastUpdateTime by remember { mutableLongStateOf(0L) }
-
-            Column(
-                modifier = Modifier
-                    .background(color = LittleLemonColor.green)
-                    .padding(start = 12.dp, end = 12.dp, top = 16.dp, bottom = 16.dp)
-            ) {
-                Text(
-                    text = "Challenge",
-                    fontSize = 40.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = LittleLemonColor.yellow
-                )
-                OutlinedTextField(
-                    value = searchPhrase,
-                    onValueChange = { searchQuey ->
-                        searchPhrase = searchQuey
-                        lastUpdateTime = System.currentTimeMillis()
-                    },
-                    placeholder = {
-                        Text(
-                            text = "Enter to Search",
-                            modifier = Modifier.background(Color.White)
-                        )
-                    },
-                    leadingIcon = {
-                        Icon(
-                            imageVector = Icons.Default.Search,
-                            contentDescription = ""
-                        )
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = 25.dp, end = 25.dp, top = 16.dp)
-                        .clip(shape = RoundedCornerShape(4.dp))
-                        .background(Color.White)
-                )
-                DisposableEffect(lastUpdateTime) {
-                    val timer = Timer()
-                    timer.schedule(object : TimerTask() {
-                        override fun run() {
-                            val currentTime = System.currentTimeMillis()
-                            if (currentTime - lastUpdateTime > 1000) {
-                                viewModel.fetchData(searchPhrase)
-                            }
-                        }
-                    }, 1000)
-
-                    onDispose {
-                        timer.cancel()
-                    }
-                }
-                item?.let {
-                    MenuItemsList(
-                        it, onImageClick = onImageClick
+            Text(
+                text = "Challenge",
+                fontSize = 40.sp,
+                fontWeight = FontWeight.Bold,
+                color = LittleLemonColor.yellow
+            )
+            OutlinedTextField(
+                value = searchPhrase,
+                onValueChange = { searchQuey ->
+                    searchPhrase = searchQuey
+                    lastUpdateTime = System.currentTimeMillis()
+                },
+                placeholder = {
+                    Text(
+                        text = "Enter to Search",
+                        modifier = Modifier.background(Color.White)
                     )
-                }
+                },
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Default.Search,
+                        contentDescription = ""
+                    )
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 25.dp, end = 25.dp, top = 16.dp)
+                    .clip(shape = RoundedCornerShape(4.dp))
+                    .background(Color.White)
+            )
+            DisposableEffect(lastUpdateTime) {
+                val timer = Timer()
+                timer.schedule(object : TimerTask() {
+                    override fun run() {
+                        val currentTime = System.currentTimeMillis()
+                        if (currentTime - lastUpdateTime > 1000) {
+                            viewModel.fetchData(searchPhrase)
+                        }
+                    }
+                }, 1000)
 
+                onDispose {
+                    timer.cancel()
+                }
             }
+            item?.let {
+                MenuItemsList(
+                    it, onImageClick = onImageClick
+                )
+            }
+
         }
     }
-
-
 }
 
 @OptIn(ExperimentalGlideComposeApi::class)
